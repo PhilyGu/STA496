@@ -1,0 +1,2 @@
+
+The training error rate often is quite different from the test erroe rate, and in particular the former can dramatically underestimate the latter.
