@@ -3,6 +3,8 @@ title: "Corss Validaton"
 output: html_document
 ---
 
+# I will continuously update this file.
+
 ```{r}
 #Cross Validation
 library(ISLR)
