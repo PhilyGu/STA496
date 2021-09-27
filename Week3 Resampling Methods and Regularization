@@ -4,3 +4,4 @@ Resampling methods are an indispensable tool in modern statistics. They involve 
 ## Cross Validation
 
 The training error rate often is quite different from the test error rate, and in particular the former can dramatically underestimate the latter.
+  v
