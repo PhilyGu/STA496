@@ -6,7 +6,7 @@ order to produce a qualitative variable. This has the effect of fitting
 a piecewise constant function.
 
 ## Polynomial Regres
-![plot](Images for notes\2.PNG)
+![plot](D:\GitHub\Images for notes\2.PNG)
 
  
  
