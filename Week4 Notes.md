@@ -1,8 +1,11 @@
-**Moving beyond linearity**
--regression
- ccccc
- ccc
+**Moving Beyond Linearity**
+-Step functions cut the range of a variable into K distinct regions in
+order to produce a qualitative variable. This has the effect of fitting
+a piecewise constant function.
 
-
- ccc
  
+ 
+
+
+ 
+
