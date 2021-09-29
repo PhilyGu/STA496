@@ -22,4 +22,5 @@ alt=“Subject Pronouns”
 style=“margin-right: 10px;”
 />
 
-<img src="D:\GitHub/Images for notes\2.PNG">
+
+<img src="D:\GitHub\Images for notes\2.PNG">
