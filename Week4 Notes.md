@@ -1,10 +1,9 @@
 **Moving Beyond Linearity**
 
-##### Step functions
--Step functions cut the range of a variable into K distinct regions in
-order to produce a qualitative variable. This has the effect of fitting
-a piecewise constant function.
+## Polynomial Regression
 
-## Polynomial Regres
+Polynomial regression extends the linear model by adding extra predictors, obtained by raising each of the original predictors to a power.
+This approach provides a simple way to provide a non-linear fit to data.
+
 
 <img src="Images\a.jpg">
