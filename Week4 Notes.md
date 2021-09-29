@@ -9,4 +9,6 @@ This approach provides a simple way to provide a non-linear fit to data.
 
 <img src="Images\stepdef.PNG">
 
-where I(·) is an indicator function that returns a 1 if the condition is true,
+where I(·) is an indicator function that returns a 1 if the condition is true, and returns a 0 otherwise.
+
+$e^{i \pi} = -1$
