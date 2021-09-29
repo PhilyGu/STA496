@@ -5,8 +5,8 @@
 order to produce a qualitative variable. This has the effect of fitting
 a piecewise constant function.
 
-## Polynomial Regression
-![alt text](Images for notes\2.PNG)
+## Polynomial Regres
+![plot](Images for notes\2.PNG)
 
  
  
