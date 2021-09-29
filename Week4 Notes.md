@@ -7,4 +7,4 @@ a piecewise constant function.
 
 ## Polynomial Regres
 
-<img src="D:\GitHub\Images\a.jpg">
+<img src="Images\a.jpg">
