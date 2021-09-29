@@ -6,7 +6,7 @@ order to produce a qualitative variable. This has the effect of fitting
 a piecewise constant function.
 
 ## Polynomial Regression
-![alt text](D:\GitHub\Images\2.PNG)
+![alt text](Images for notes\2.PNG)
 
  
  
