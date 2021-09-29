@@ -15,5 +15,10 @@ D:\GitHub\Images for notes\2.png
  
 
 
- 
+ <img
+src=“Images for notes\2.PNG”
+raw=true
+alt=“Subject Pronouns”
+style=“margin-right: 10px;”
+/>
 
