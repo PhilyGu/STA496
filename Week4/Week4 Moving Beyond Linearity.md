@@ -48,20 +48,23 @@ into enough regions, this can produce an extremely flexible fit.
 Instead of fitting a high-degree polynomial over the entire range of X, piecewise polynomial regression 
 involves fitting separate low-degree polynomial over different regions of X. For example, a piecewise 
 cubic polynomial works by fitting a cubic regression model of the form
+
 <img src="Images\piecedef.PNG">
 where the coefficients β0, β1, β2, and β3 differ in different parts of the range
 of X. 
+
 <img src="Images\piecedef.PNG">
 Knots: The points where the coefficients change are called knots.
 
 **The Spline Basis Representation**
 A cubic spline with K knots can be modeled as
+
 <img src="Images\cubic.PNG">
-truncated power basis:
+
+### truncated power basis:
 <img src="Images\truncateddef.PNG">
 where ξ is the knot.
 In other words, in order to fit a cubic spline to a data set with K knots, we
 perform least squares regression with an intercept and 3 + K predictors, of
 the form X, X2, X3, h(X, ξ1), h(X, ξ2),...,h(X, ξK), where ξ1,..., ξK are
-the knots. This amounts to estimating a total of K + 4 regression coefficients; for this reason, fitting a cubic spline with K knots uses K+4 degrees
-of freedom.
+the knots. This amounts to estimating a total of K + 4 regression coefficients; for this reason, fitting a cubic spline with K knots uses K+4 degrees of freedom.
