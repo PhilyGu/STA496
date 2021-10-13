@@ -20,3 +20,8 @@ We now discuss the process of building a regression tree. Roughly speaking, ther
 + 2. For every observation that falls into the region Rj , we make the same
 prediction, which is simply the mean of the response values for the
 training observations in Rj .
+
+Construct the regions R1,...,RJ:  In theory, the regions could have any shape. However, we choose to divide the predictor space into high-dimensional rectangles, or boxes, for simplicity and for ease of interpretation of the resulting predictive model. The goal is to find boxes R1,...,RJ that minimize the RSS, given by
+
+<img src="TreeImages\f1.PNG">
+where $y^t$ is the mean response for the training observations within the jth box.
