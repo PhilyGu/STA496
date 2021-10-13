@@ -6,12 +6,12 @@ Definition: Since the set of splitting rules used to segment the predictor space
 Note: The number in each leaf is the mean of the response for the observations.
 
 ### Regression trees
-<img src="Images\regtree.PNG">
+<img src="TreeImages\regtree.PNG">
 
 Understanding: The regions R1, R2, and R3 are known as terminal nodes or leaves of the tree. The points along the tree where the predictor space
 is split are referred to as internal nodes. We refer to the segments of the trees that connect the nodes as branches.
 
-<img src="Images\regtree0.PNG">
+<img src="TreeImages\regtree0.PNG">
 Compared with Figure 8.2 above,  this figure is likely an over-simplification of the true relationship between Hits, Years, and Salary. However, it has advantages over other types of regression models: it is easier to interpret, and has a nice graphical representation.
 
 ### Prediction via Stratification of the Feature Space
