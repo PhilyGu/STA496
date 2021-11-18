@@ -5,6 +5,6 @@ This is the place where I would share my STA496 Learning notes and make a diary 
 #### Textbook 
 Introduction to Statistical Learning with Applications in R, second version
 
-#### Paper 
+#### List of Papers with code and data available
+van Schaik, P., Peng, Y., Ojelabi, A. et al. Explainable statistical learning in public health for policy development: the case of real-world suicide data. BMC Med Res Methodol 19, 152 (2019). https://doi.org/10.1186/s12874-019-0796-7
 
-which is available at https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-019-0796-7 (key words: public health, statistical learning)
