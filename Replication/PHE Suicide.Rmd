@@ -1,0 +1,230 @@
+---
+title: "PHE"
+author: "RIKI TORIQUL MUJIB"
+date: "9 February 2018"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+library(fingertipsR)
+library(tidyverse)
+library(ggplot2)
+library(ggridges)
+library(ggjoy)
+library(WVPlots)
+library(stringr)
+library(lattice)
+library(caret)
+library(caretEnsemble)
+devtools::install_github('ukgovdatascience/govstyle')
+library(govstyle)
+library(viridisLite)
+library(viridis)
+library(dplyr)
+```
+
+```{r}
+source("F:/STA496/Replication Paper/get_data_new.R")
+
+analysis_final <- analysis_final_new %>%
+  janitor::clean_names()
+```
+
+```{r}
+dataset %>%
+  filter(IndicatorID == 41001, !Sex == "Persons") %>%
+  dplyr::select(AreaName, Timeperiod, TimeperiodSortable, Value, Sex) %>%
+  ggplot(aes(x = Value, y = reorder(Timeperiod, -TimeperiodSortable), fill = ..x..)) +
+  geom_joy_gradient(rel_min_height = .05, scale = 2, gradient_lwd = .5) + 
+  theme_joy(font_size = 10) +
+  facet_wrap(~Sex, scales = "free") +
+  scale_fill_viridis(name = "", direction = -1, option = "C")+
+  scale_x_continuous(expand = c(0.01, 0)) +  
+  labs(x = "Suicide rate", 
+       y = "")
+```
+
+```{r}
+dataset %>%
+  filter(IndicatorID == 41001) %>%
+  dplyr::select(AreaName, Timeperiod, TimeperiodSortable, Value, Sex, IndicatorName) %>%
+  filter(AreaName == "England") %>%
+  ggplot(aes(Timeperiod, Value, color = Sex)) +
+  geom_line(aes(group = Sex)) + 
+  geom_point() +
+  facet_wrap(~IndicatorName) +
+  labs(y = "Suicide rate", 
+       x = "")
+```
+
+```{r}
+options(digits = 3)
+
+summary_stats <- analysis_final %>%
+  dplyr::select(suicide_rate) %>%
+  summarise(min = min(suicide_rate), 
+            max = max(suicide_rate), 
+            mean = mean(suicide_rate), 
+            sd = sd(suicide_rate))
+
+summary_stats %>%
+  knitr::kable(caption = "Summary statistics for suicide rates")
+```
+
+```{r}
+cor <- cor(analysis_final)
+corrplot::corrplot(cor, tl.cex = .7, tl.col = "black", order = "hclust", number.cex = .4, type = "lower", method = "square")
+```
+
+```{r}
+corrr <- analysis_final %>%
+  corrr::correlate()
+View(corrr)
+```
+
+```{r}
+fmla <- suicide_rate ~ .
+
+mod_lm <- lm(fmla, data = analysis_final)
+View(mod_lm)
+lm_tidy <- broom::tidy(mod_lm) %>%
+  filter(p.value < 0.05)
+
+lm_analysis <- broom::augment(mod_lm, analysis_final)
+
+rsq <- mod_lm %>%
+  broom::glance() %>%
+  dplyr::select(r.squared)
+
+lm_rmse <- lm_analysis %>%
+  summarise(rmse = sqrt(mean(.resid^2)))
+```
+
+```{r}
+lm_analysis %>%
+  ggplot(aes(suicide_rate, .fitted)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  theme_gov()
+```
+
+```{r}
+library(caretEnsemble)
+seed <- 1234
+
+
+index <- createDataPartition(analysis_final$suicide_rate, p = 0.7, list = FALSE)
+
+train.mod <- analysis_final[index, ]
+test.mod <- analysis_final[-index, ]
+
+
+broom::glance(t.test(train.mod$suicide_rate, test.mod$suicide_rate)) ## no sig diff between test and train
+
+control <- trainControl(method="repeatedcv", number=10, repeats=10, savePredictions=TRUE, classProbs=TRUE)
+
+## Set model list
+algorithmList <- c( 'glm', 'glmnet', 'lasso',  'rf', 'svmRadial')
+
+set.seed(seed)
+
+
+models <- caretList(fmla, data=train.mod, trControl=control, methodList=algorithmList)
+
+results <- resamples(models)
+
+## results
+
+
+## plot results
+dotplot(results)
+```
+
+```{r}
+enet.mod <- train(fmla, data=train.mod, method="glmnet", tuneLength=5, trControl=trainControl(method="cv", number=10, repeats = 3, savePredictions = TRUE))
+
+predictions <- predict(enet.mod, newdata = test.mod)
+
+rmse <- RMSE(predictions, test.mod$suicide_rate)
+r2 <- R2(predictions, test.mod$suicide_rate)
+test.mod$predictions <- predictions
+
+test.mod %>%
+  ggplot(aes(predictions, suicide_rate)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+```{r}
+modvimp <- varImp(enet.mod, scale = FALSE)
+plot(modvimp)
+```
+
+```{r}
+ds2 <- dataset_latest %>%
+  ungroup() %>% 
+  filter(AreaType == "County & UA") %>%
+  mutate(index = paste(IndicatorID, Age, Sex, sep = "_")) %>%
+  select(AreaName, index, Value)
+```
+
+
+```{r}
+analysisds2 <- ds2 %>%
+  tidyr::spread(key = index, value = Value)
+```
+
+```{r}
+analysis2ds2<-analysisds2
+names(analysis2ds2)<-gsub("_.*","",names(analysis2ds2))
+write.csv(analysis2ds2,file ="F:/Study/PHE/analysis2ds2.csv", row.names = FALSE)
+```
+
+
+```{r}
+data=read.csv("analysis2ds2.csv",header=FALSE)
+nama=data[,1]
+data1=data[,2:49]
+refer=data[1,2:49]
+
+m=as.data.frame(t(data1))
+
+m3=aggregate(m, by=list(Category=m$V1), FUN=sum)
+m4=t(m3)
+
+```
+
+```{r}
+m5<-m4[-c(2),]
+colnames(m5)<-format(round(m5[c(1),],0))
+m6<-m5[-c(1), ]
+```
+
+```{r}
+m7<-cbind(AreaName = analysis2ds2$AreaName, m6)
+data.matrix(m7, rownames.force = NA)
+
+```
+
+```{r}
+write.csv(m7,file ="F:/Study/PHE/m7.csv")
+write.csv(ds2,file = "F:/Study/PHE/ds2.csv")
+```
+
+```{r}
+write.csv(ds2,file = "F:/Study/PHE/ds2.csv")
+write.csv(analysisds2,file = "F:/Study/PHE/analysisds2.csv")
+```
+
+```{r}
+write.csv(analysisds2,file = "F:/Study/PHE/analysisds2.csv")
+```
+```{r}
+write.csv(m4,file = "F:/Study/PHE/m4.csv")
+```
+
+
+
+
