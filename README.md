@@ -11,5 +11,5 @@ This is the place where I would share my STA496 Learning notes and make a diary 
 Introduction to Statistical Learning with Applications in R, second version
 
 #### List of related Papers with code and data available
-van Schaik, P., Peng, Y., Ojelabi, A. et al. Explainable statistical learning in public health for policy development: the case of real-world suicide data. BMC Med Res Methodol 19, 152 (2019). https://doi.org/10.1186/s12874-019-0796-7
-Willetts, M., Hollowell, S., Aslett, L. et al. Statistical machine learning of sleep and physical activity phenotypes from sensor data in 96,220 UK Biobank participants. Sci Rep 8, 7961 (2018). https://doi-org.myaccess.library.utoronto.ca/10.1038/s41598-018-26174-1
++ van Schaik, P., Peng, Y., Ojelabi, A. et al. Explainable statistical learning in public health for policy development: the case of real-world suicide data. BMC Med Res Methodol 19, 152 (2019). https://doi.org/10.1186/s12874-019-0796-7
++ Willetts, M., Hollowell, S., Aslett, L. et al. Statistical machine learning of sleep and physical activity phenotypes from sensor data in 96,220 UK Biobank participants. Sci Rep 8, 7961 (2018). https://doi-org.myaccess.library.utoronto.ca/10.1038/s41598-018-26174-1
