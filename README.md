@@ -8,7 +8,7 @@ This is the place where I would share my STA496 Learning notes and make a diary 
 + Starting from week6, I would start to replicate one paper. 
 
 #### Textbook 
-Introduction to Statistical Learning with Applications in R, second version
+Introduction to Statistical Learning with Applications in R (second version), available at https://web.stanford.edu/~hastie/ISLR2/ISLRv2_website.pdf
 
 #### List of related Papers with code and data available
 + van Schaik, P., Peng, Y., Ojelabi, A. et al. Explainable statistical learning in public health for policy development: the case of real-world suicide data. BMC Med Res Methodol 19, 152 (2019). https://doi.org/10.1186/s12874-019-0796-7
