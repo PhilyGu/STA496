@@ -1,4 +1,4 @@
-### STA496
+### STA496 (Readings in Statistics)
 
 This is the place where I would share my STA496 Learning notes and make a diary of my learning processes. In this research project, I would focus on replication study and exploring public health with statistical learning Methods. From week1 to week5, I would read several chapters (approximately right chapters) on ISLRv2, and the plan is 
 + Week1&2: Chapter11 (Survival Analysis and Censored Data)
