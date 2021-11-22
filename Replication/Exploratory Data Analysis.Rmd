@@ -1,0 +1,251 @@
+---
+title: "Exploratory Data Analysis"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r,message=FALSE,warning=FALSE,include=FALSE}
+library(fingertipsR)
+library(tidyverse)
+library(ggplot2)
+library(ggridges)
+library(ggjoy)
+library(WVPlots)
+library(stringr)
+library(lattice)
+library(caret)
+library(caretEnsemble)
+#devtools::install_github('ukgovdatascience/govstyle')
+library(govstyle)
+library(viridisLite)
+library(viridis)
+library(dplyr)
+```
+
+## Related Graphs for Analysis
+```{r,message=FALSE,warning=FALSE,include=FALSE}
+source("F:/STA496/Replication Paper/Replications/DataProcessing.R")
+
+analysis_final <- analysis_final_new %>%
+  janitor::clean_names()
+
+name<- name %>%
+  janitor::clean_names()
+
+```
+
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+dataset %>%
+  filter(IndicatorID == 41001, !Sex == "Persons") %>%
+  dplyr::select(AreaName, Timeperiod, TimeperiodSortable, Value, Sex) %>%
+  ggplot(aes(x = Value, y = reorder(Timeperiod, -TimeperiodSortable), fill = ..x..)) +
+  geom_joy_gradient(rel_min_height = .05, scale = 2, gradient_lwd = .5) + 
+  theme_joy(font_size = 10) +
+  facet_wrap(~Sex, scales = "free") +
+  scale_fill_viridis(name = "", direction = -1, option = "C")+
+  scale_x_continuous(expand = c(0.01, 0)) +  
+  labs(x = "Suicide rate", y = "", title = "Figure: The changes of suicide rate for the female and male every year")
+```
+
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+dataset %>%
+  filter(IndicatorID == 41001) %>%
+  dplyr::select(AreaName, Timeperiod, TimeperiodSortable, Value, Sex, IndicatorName) %>%
+  filter(AreaName == "England") %>%
+  ggplot(aes(Timeperiod, Value, color = Sex)) +
+  geom_line(aes(group = Sex)) + 
+  geom_point() +
+  facet_wrap(~IndicatorName) +
+  labs(y = "Suicide rate", x = "", title = "Figure: The changes of suicide rate over time")
+```
+
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+options(digits = 3)
+
+summary_stats <- analysis_final %>%
+  dplyr::select(suicide_rate) %>%
+  summarise(min = min(suicide_rate), 
+            max = max(suicide_rate), 
+            mean = mean(suicide_rate), 
+            sd = sd(suicide_rate))
+
+summary_stats %>%
+  knitr::kable(caption = "Summary statistics for suicide rates")
+```
+
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+cor <- cor(name)
+corrplot::corrplot(cor, tl.cex = .6, tl.col = "black", order = "hclust", number.cex = .4, type = "lower", method = "square",title = "correlation between each variable")
+
+```
+
+
+```{r,message=FALSE,warning=FALSE,include=FALSE}
+corrr <- analysis_final %>%
+  corrr::correlate()
+```
+
+
+```{r,message=FALSE,warning=FALSE,include=FALSE}
+fmla <- suicide_rate ~ .
+
+mod_lm <- lm(fmla, data = analysis_final)
+#View(mod_lm)
+lm_tidy <- broom::tidy(mod_lm) %>%
+  filter(p.value < 0.05)
+
+lm_analysis <- broom::augment(mod_lm, analysis_final)
+
+rsq <- mod_lm %>%
+  broom::glance() %>%
+  dplyr::select(r.squared)
+
+lm_rmse <- lm_analysis %>%
+  summarise(rmse = sqrt(mean(.resid^2)))
+```
+
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+lm_analysis %>%
+  ggplot(aes(suicide_rate, .fitted)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  theme_gov()
+```
+
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+library(caretEnsemble)
+seed <- 1234
+
+
+index <- createDataPartition(name$suicide_rate, p = 0.7, list = FALSE)
+
+train.mod <- name[index, ]
+test.mod <- name[-index, ]
+
+
+broom::glance(t.test(train.mod$suicide_rate, test.mod$suicide_rate)) ## no sig diff between test and train
+
+control <- trainControl(method="repeatedcv", number=10, repeats=10, savePredictions=TRUE, classProbs=TRUE)
+
+## Set model list
+algorithmList <- c( 'glm', 'glmnet', 'lasso',  'rf', 'svmRadial')
+
+set.seed(seed)
+
+
+models <- caretList(fmla, data=train.mod, trControl=control, methodList=algorithmList)
+
+results <- resamples(models)
+
+## results
+
+
+## plot results
+dotplot(results)
+```
+
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+enet.mod <- train(fmla, data=train.mod, method="glmnet", tuneLength=5, trControl=trainControl(method="cv", number=10, repeats = 3, savePredictions = TRUE))
+
+predictions <- predict(enet.mod, newdata = test.mod)
+
+rmse <- RMSE(predictions, test.mod$suicide_rate)
+r2 <- R2(predictions, test.mod$suicide_rate)
+test.mod$predictions <- predictions
+
+test.mod %>%
+  ggplot(aes(predictions, suicide_rate)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+modvimp <- varImp(enet.mod, scale = FALSE)
+plot(modvimp,sub="Importance for each variable")
+```
+
+
+```{r,include=FALSE}
+#ds2 <- dataset_latest %>%
+#  ungroup() %>% 
+#  filter(AreaType == "County & UA") %>%
+#  mutate(index = paste(IndicatorID, Age, Sex, sep = "_")) %>%
+#  dplyr::select(AreaName, index, Value)
+```
+
+
+```{r,include=FALSE}
+#analysisds2 <- ds2 %>%
+#  tidyr::spread(key = index, value = Value)
+```
+
+
+```{r,include=FALSE}
+#analysis2ds2<-analysisds2
+#names(analysis2ds2)<-gsub("_.*","",names(analysis2ds2))
+#write.csv(analysis2ds2,file ="F:/Study/PHE/analysis2ds2.csv", row.names = FALSE)
+```
+
+
+```{r,include=FALSE}
+#data=read.csv("analysis2ds2.csv",header=FALSE)
+#nama=data[,1]
+#data1=data[,2:49]
+#refer=data[1,2:49]
+
+#m=as.data.frame(t(data1))
+
+#m3=aggregate(m, by=list(Category=m$V1), FUN=sum)
+#m4=t(m3)
+
+```
+
+
+```{r,include=FALSE}
+#m5<-m4[-c(2),]
+#colnames(m5)<-format(round(m5[c(1),],0))
+#m6<-m5[-c(1), ]
+```
+
+
+```{r,include=FALSE}
+#m7<-cbind(AreaName = analysis2ds2$AreaName, m6)
+#data.matrix(m7, rownames.force = NA)
+
+```
+
+
+```{r,include=FALSE}
+#write.csv(m7,file ="F:/Study/PHE/m7.csv")
+#write.csv(ds2,file = "F:/Study/PHE/ds2.csv")
+```
+
+
+```{r,include=FALSE}
+#write.csv(ds2,file = "F:/Study/PHE/ds2.csv")
+#write.csv(analysisds2,file = "F:/Study/PHE/analysisds2.csv")
+```
+
+
+```{r,include=FALSE}
+#write.csv(analysisds2,file = "F:/Study/PHE/analysisds2.csv")
+```
+
+
+```{r,include=FALSE}
+#write.csv(m4,file = "F:/Study/PHE/m4.csv")
+```
+
+
+
+
+
