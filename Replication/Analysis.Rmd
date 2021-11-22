@@ -1,0 +1,506 @@
+---
+title: "Analysis for Suicide data"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE,warning=FALSE}
+library(fingertipsR)
+library(tidyverse)
+library(ggplot2)
+library(ggridges)
+library(ggjoy)
+library(WVPlots)
+library(stringr)
+library(lattice)
+library(kernlab)
+library(caret)
+library(caretEnsemble)
+library(govstyle)
+library(viridisLite)
+library(viridis)
+library(dplyr)
+library(psych)
+library(GPArotation)
+library(data.table)
+library(QuantPsyc)
+```
+
+```{r, message=FALSE,warning=FALSE}
+source("F:/STA496/Replication Paper/Replications/DataProcessing.R")
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Multiple regression model
+fmla_new <- Suicide_Rate ~ .
+
+mod_lm_new <- lm(fmla_new, data = analysis_final_new)
+#View(mod_lm_new)
+#summary(mod_lm_new)
+lm_tidy_new <- broom::tidy(mod_lm_new) %>%
+  filter(p.value < 0.05)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Sort the multiple linear regression coefficients
+MulLinReg_Coef<-mod_lm_new$coefficients
+MulLinReg_Coef_df<-as.data.frame(MulLinReg_Coef)
+MulLinReg_Coef_Only<-MulLinReg_Coef_df[-1,drop = FALSE,]
+sort.MulLinReg_Coef_Only<-MulLinReg_Coef_Only[order(MulLinReg_Coef_Only$MulLinReg_Coef ,decreasing = TRUE), drop = FALSE,]
+
+#write.csv(sort.MulLinReg_Coef_Only,file ="F:/STA496/Replication Paper/Replications/sort.MulLinReg_Coef_Only.csv")
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Standardized multiple linear regression and sort the coefficients to see the most importance variable
+lm_stan<-lm.beta(mod_lm_new)
+lm_stan_df<-as.data.frame(lm_stan)
+sort.lm_stan<-lm_stan_df[order(lm_stan_df$lm_stan, decreasing = TRUE), drop=FALSE,]
+
+#write.csv(sort.lm_stan,file ="F:/STA496/Replication Paper/Replications/sort.lm_stan.csv")
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Calculate the importance based on coefficients
+modvimp_new <- varImp(mod_lm_new, scale = FALSE)
+#Sort the biggest importance
+sort.modvimp_new<-modvimp_new[order(modvimp_new$Overall,decreasing = TRUE), drop = FALSE,]
+#write.csv(sort.modvimp_new,file ="F:/STA496/Replication Paper/Replications/sort.modvimp_new.csv")
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Female`
+LinReg_1 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Female`,data=analysis_final_new)
+summary(LinReg_1)
+#Plot Linear Regression for Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Female 
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Female`,data=analysis_final_new)
+abline(LinReg_1)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Male`   
+LinReg_2 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Male` ,data=analysis_final_new)
+summary(LinReg_2)
+#Plot Linear Regression for `Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Male`   
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Male` ,data=analysis_final_new)
+abline(LinReg_2)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Persons`  
+LinReg_3 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Persons`,data=analysis_final_new)
+summary(LinReg_3)
+#Plot Linear Regression for `Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Persons`   
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Persons`     ,data=analysis_final_new)
+abline(LinReg_3)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Adults in treatment at specialist alcohol misuse services: rate per 1000 population_18+ yrs_Persons`       
+LinReg_4 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Adults in treatment at specialist alcohol misuse services: rate per 1000 population_18+ yrs_Persons`,data=analysis_final_new)
+summary(LinReg_4)
+#Plot Linear Regression for `Adults in treatment at specialist alcohol misuse services: rate per 1000 population_18+ yrs_Persons`        
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Adults in treatment at specialist alcohol misuse services: rate per 1000 population_18+ yrs_Persons`,data=analysis_final_new)
+abline(LinReg_4)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Adults in treatment at specialist alcohol misuse services: rate per 1000 population_18+ yrs_Persons`       
+LinReg_5 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Adults in treatment at specialist drug misuse services: rate per 1000 population_18+ yrs_Persons`,data=analysis_final_new)
+summary(LinReg_5)
+#Plot Linear Regression for `Adults in treatment at specialist alcohol misuse services: rate per 1000 population_18+ yrs_Persons`        
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Adults in treatment at specialist drug misuse services: rate per 1000 population_18+ yrs_Persons`,data=analysis_final_new)
+abline(LinReg_5)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Children in care_<18 yrs_Persons`     
+LinReg_6 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Children in care_<18 yrs_Persons`,data=analysis_final_new)
+summary(LinReg_6)
+#Plot Linear Regression for `Children in care_<18 yrs_Persons`      
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Children in care_<18 yrs_Persons`,data=analysis_final_new)
+abline(LinReg_6)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Children in the youth justice system (10-17 yrs)_10-17 yrs_Persons`   
+LinReg_7 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Children in the youth justice system (10-17 yrs)_10-17 yrs_Persons`   ,data=analysis_final_new)
+summary(LinReg_7)
+#Plot Linear Regression for `Children in the youth justice system (10-17 yrs)_10-17 yrs_Persons`    
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Children in the youth justice system (10-17 yrs)_10-17 yrs_Persons`,data=analysis_final_new)
+abline(LinReg_7)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Children leaving care: rate per 10,000 children aged under 18_<18 yrs_Persons`   
+LinReg_8 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Children leaving care: rate per 10,000 children aged under 18_<18 yrs_Persons`   ,data=analysis_final_new)
+summary(LinReg_8)
+#Plot Linear Regression for `Children leaving care: rate per 10,000 children aged under 18_<18 yrs_Persons`    
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Children leaving care: rate per 10,000 children aged under 18_<18 yrs_Persons`   ,data=analysis_final_new)
+abline(LinReg_8)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for`Depression: Recorded prevalence (aged 18+)_18+ yrs_Persons` 
+LinReg_9 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Depression: Recorded prevalence (aged 18+)_18+ yrs_Persons` ,data=analysis_final_new)
+summary(LinReg_9)
+#Plot Linear Regression for `Depression: Recorded prevalence (aged 18+)_18+ yrs_Persons` 
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Depression: Recorded prevalence (aged 18+)_18+ yrs_Persons` ,data=analysis_final_new)
+abline(LinReg_9)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Emergency Hospital Admissions for Intentional Self-Harm_All ages_Female`          
+LinReg_10 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Emergency Hospital Admissions for Intentional Self-Harm_All ages_Female`        ,data=analysis_final_new)
+summary(LinReg_10)
+#Plot Linear Regression for `Emergency Hospital Admissions for Intentional Self-Harm_All ages_Female`          
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Emergency Hospital Admissions for Intentional Self-Harm_All ages_Female`          ,data=analysis_final_new)
+abline(LinReg_10)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Emergency Hospital Admissions for Intentional Self-Harm_All ages_Male` 
+LinReg_11 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Emergency Hospital Admissions for Intentional Self-Harm_All ages_Male` ,data=analysis_final_new)
+summary(LinReg_11)
+#Plot Linear Regression for `Emergency Hospital Admissions for Intentional Self-Harm_All ages_Male`  
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Emergency Hospital Admissions for Intentional Self-Harm_All ages_Male` ,data=analysis_final_new)
+abline(LinReg_11)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Emergency Hospital Admissions for Intentional Self-Harm_All ages_Persons` 
+LinReg_12 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Emergency Hospital Admissions for Intentional Self-Harm_All ages_Persons`  ,data=analysis_final_new)
+summary(LinReg_12)
+#Plot Linear Regression for `Emergency Hospital Admissions for Intentional Self-Harm_All ages_Persons` 
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Emergency Hospital Admissions for Intentional Self-Harm_All ages_Persons` ,data=analysis_final_new)
+abline(LinReg_12)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Estimated prevalence of common mental disorders: % of population aged 16 & over_16+ yrs_Persons`    
+LinReg_13 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Estimated prevalence of common mental disorders: % of population aged 16 & over_16+ yrs_Persons`,data=analysis_final_new)
+summary(LinReg_13)
+#Plot Linear Regression for `Estimated prevalence of common mental disorders: % of population aged 16 & over_16+ yrs_Persons`    
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Estimated prevalence of common mental disorders: % of population aged 16 & over_16+ yrs_Persons` ,data=analysis_final_new)
+abline(LinReg_13)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Estimated prevalence of common mental disorders: % of population aged 65 & over_65+ yrs_Persons` 
+LinReg_14 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Estimated prevalence of common mental disorders: % of population aged 65 & over_65+ yrs_Persons` ,data=analysis_final_new)
+summary(LinReg_14)
+#Plot Linear Regression for `Estimated prevalence of common mental disorders: % of population aged 65 & over_65+ yrs_Persons`  
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Estimated prevalence of common mental disorders: % of population aged 65 & over_65+ yrs_Persons` ,data=analysis_final_new)
+abline(LinReg_14)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Estimated prevalence of opiate and/or crack cocaine use_15-64 yrs_Persons`   
+LinReg_15 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Estimated prevalence of opiate and/or crack cocaine use_15-64 yrs_Persons`   ,data=analysis_final_new)
+summary(LinReg_15)
+#Plot Linear Regression for `Estimated prevalence of opiate and/or crack cocaine use_15-64 yrs_Persons`   
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Estimated prevalence of opiate and/or crack cocaine use_15-64 yrs_Persons`   ,data=analysis_final_new)
+abline(LinReg_15)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Long-term health problem or disability: % of population_All ages_Persons`     
+LinReg_16 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Long-term health problem or disability: % of population_All ages_Persons`     ,data=analysis_final_new)
+summary(LinReg_16)
+#Plot Linear Regression for `Long-term health problem or disability: % of population_All ages_Persons`     
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Long-term health problem or disability: % of population_All ages_Persons`     ,data=analysis_final_new)
+abline(LinReg_16)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Long term claimants of Jobseeker's Allowance_16-64 yrs_Persons`   
+LinReg_17 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Long term claimants of Jobseeker's Allowance_16-64 yrs_Persons`   ,data=analysis_final_new)
+summary(LinReg_17)
+#Plot Linear Regression for `Long term claimants of Jobseeker's Allowance_16-64 yrs_Persons`   
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Long term claimants of Jobseeker's Allowance_16-64 yrs_Persons`   ,data=analysis_final_new)
+abline(LinReg_17)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Marital breakup: % of adults_18+ yrs_Persons`     
+LinReg_18 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Marital breakup: % of adults_18+ yrs_Persons`,data=analysis_final_new)
+summary(LinReg_18)
+#Plot Linear Regression for `Marital breakup: % of adults_18+ yrs_Persons`      
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Marital breakup: % of adults_18+ yrs_Persons`,data=analysis_final_new)
+abline(LinReg_18)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Mental Health: QOF prevalence (all ages)_All ages_Persons`   
+LinReg_19 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Mental Health: QOF prevalence (all ages)_All ages_Persons`   ,data=analysis_final_new)
+summary(LinReg_19)
+#Plot Linear Regression for `Mental Health: QOF prevalence (all ages)_All ages_Persons`   
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Mental Health: QOF prevalence (all ages)_All ages_Persons`,data=analysis_final_new)
+abline(LinReg_19)
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Older people living alone: % of households occupied by a single person aged 65 or over_65+ yrs_Persons` 
+LinReg_20 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Older people living alone: % of households occupied by a single person aged 65 or over_65+ yrs_Persons` ,data=analysis_final_new)
+summary(LinReg_20)
+#Plot Linear Regression for `Older people living alone: % of households occupied by a single person aged 65 or over_65+ yrs_Persons`  
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Older people living alone: % of households occupied by a single person aged 65 or over_65+ yrs_Persons`,data=analysis_final_new)
+abline(LinReg_20)
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `People living alone: % of all usual residents in households occupied by a single person_All ages_Persons` 
+LinReg_21 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`People living alone: % of all usual residents in households occupied by a single person_All ages_Persons` ,data=analysis_final_new)
+summary(LinReg_21)
+#Plot Linear Regression for `People living alone: % of all usual residents in households occupied by a single person_All ages_Persons`  
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`People living alone: % of all usual residents in households occupied by a single person_All ages_Persons` ,data=analysis_final_new)
+abline(LinReg_21)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Self-reported wellbeing - people with a high anxiety score_16+ yrs_Persons`  
+LinReg_22 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Self-reported wellbeing - people with a high anxiety score_16+ yrs_Persons`  ,data=analysis_final_new)
+summary(LinReg_22)
+#Plot Linear Regression for `Self-reported wellbeing - people with a high anxiety score_16+ yrs_Persons`  
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Self-reported wellbeing - people with a high anxiety score_16+ yrs_Persons`  ,data=analysis_final_new)
+abline(LinReg_22)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Social Isolation: percentage of adult carers who have as much social contact as they would like_18-64 yrs_Persons`
+LinReg_23 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Social Isolation: percentage of adult carers who have as much social contact as they would like_18-64 yrs_Persons`,data=analysis_final_new)
+summary(LinReg_23)
+#Plot Linear Regression for `Social Isolation: percentage of adult carers who have as much social contact as they would like_18-64 yrs_Persons` 
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Social Isolation: percentage of adult carers who have as much social contact as they would like_18-64 yrs_Persons`,data=analysis_final_new)
+abline(LinReg_23)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Social Isolation: percentage of adult carers who have as much social contact as they would like_18+ yrs_Persons`    
+LinReg_24 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Social Isolation: percentage of adult carers who have as much social contact as they would like_18+ yrs_Persons`    ,data=analysis_final_new)
+summary(LinReg_24)
+#Plot Linear Regression for `Social Isolation: percentage of adult carers who have as much social contact as they would like_18+ yrs_Persons`     
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Social Isolation: percentage of adult carers who have as much social contact as they would like_18+ yrs_Persons`,data=analysis_final_new)
+abline(LinReg_24)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Social Isolation: percentage of adult carers who have as much social contact as they would like_65+ yrs_Persons` 
+LinReg_25 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Social Isolation: percentage of adult carers who have as much social contact as they would like_65+ yrs_Persons` ,data=analysis_final_new)
+summary(LinReg_25)
+#Plot Linear Regression for `Social Isolation: percentage of adult carers who have as much social contact as they would like_65+ yrs_Persons` 
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Social Isolation: percentage of adult carers who have as much social contact as they would like_65+ yrs_Persons` ,data=analysis_final_new)
+abline(LinReg_25)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Social Isolation: percentage of adult carers who have as much social contact as they would like_All ages_Persons`
+LinReg_26 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Social Isolation: percentage of adult carers who have as much social contact as they would like_All ages_Persons`,data=analysis_final_new)
+summary(LinReg_26)
+#Plot Linear Regression for `Social Isolation: percentage of adult carers who have as much social contact as they would like_All ages_Persons`
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Social Isolation: percentage of adult carers who have as much social contact as they would like_All ages_Persons`,data=analysis_final_new)
+abline(LinReg_26)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Social Isolation: percentage of adult social care users who have as much social contact as they would like_18+ yrs_Persons`
+LinReg_27 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Social Isolation: percentage of adult social care users who have as much social contact as they would like_18+ yrs_Persons`,data=analysis_final_new)
+summary(LinReg_27)
+#Plot Linear Regression for `Social Isolation: percentage of adult social care users who have as much social contact as they would like_18+ yrs_Persons`
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Social Isolation: percentage of adult social care users who have as much social contact as they would like_18+ yrs_Persons`,data=analysis_final_new)
+abline(LinReg_27)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Successful completion of alcohol treatment_18+ yrs_Persons`       
+LinReg_28 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Successful completion of alcohol treatment_18+ yrs_Persons`       ,data=analysis_final_new)
+summary(LinReg_28)
+#Plot Linear Regression for `Successful completion of alcohol treatment_18+ yrs_Persons`       
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Successful completion of alcohol treatment_18+ yrs_Persons`,data=analysis_final_new)
+abline(LinReg_28)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Successful completion of drug treatment - non-opiate users_18+ yrs_Persons`    
+LinReg_29 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Successful completion of drug treatment - non-opiate users_18+ yrs_Persons`    ,data=analysis_final_new)
+summary(LinReg_29)
+#Plot Linear Regression for `Successful completion of drug treatment - non-opiate users_18+ yrs_Persons`    
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Successful completion of drug treatment - non-opiate users_18+ yrs_Persons`    ,data=analysis_final_new)
+abline(LinReg_29)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Successful completion of drug treatment - opiate users_18+ yrs_Persons` 
+LinReg_30 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Successful completion of drug treatment - opiate users_18+ yrs_Persons` ,data=analysis_final_new)
+summary(LinReg_30)
+#Plot Linear Regression for `Successful completion of drug treatment - opiate users_18+ yrs_Persons` 
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Successful completion of drug treatment - opiate users_18+ yrs_Persons` ,data=analysis_final_new)
+abline(LinReg_30)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+#Linear Regression for `Unemployment (model-based)_16+ yrs_Persons`  
+LinReg_31 <- lm(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Unemployment (model-based)_16+ yrs_Persons`  ,data=analysis_final_new)
+summary(LinReg_31)
+#Plot Linear Regression for `Unemployment (model-based)_16+ yrs_Persons`  
+plot(analysis_final_new$Suicide_Rate ~ analysis_final_new$`Unemployment (model-based)_16+ yrs_Persons`,data=analysis_final_new)
+abline(LinReg_31)
+```
+
+
+
+
+```{r,message=FALSE,warning=FALSE}
+#Assumption to do Factor Analysis: 
+#1. Determinant of correlation matrix must be near 0
+#2. KMO test > 0.5
+#3. MSA every variables > 0.5 (repeat the process if there is any variables have MSA<0.5)
+#4. Bartlett test -> p-value<0.05
+
+#Create new table, exclude suicide rate
+analysis_factor_new<-analysis_final_new
+analysis_factor_new$Suicide_Rate<-NULL
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Create correlation matrix and determinant of matrix correlation
+cor_factor_new<-cor(analysis_factor_new, method = c("pearson"))
+det(cor_factor_new)
+#Determinant value near 0 --> correlation matrix between variable is correlated
+
+write.csv(cor_factor_new,file ="F:/STA496/Replication Paper/Replications/cor_factor_new.csv")
+write.csv(cor_new,file ="F:/STA496/Replication Paper/Replications/cor_new.csv")
+```
+
+```{r,message=FALSE,warning=FALSE}
+#KMO (Kaiser-Meyer-Olkin) statistic test, sampling adequacy predicts if data are likely to factor well, based on correlation and partial correlation. 
+KMO(analysis_factor_new)
+#KMO=0.79, could be proceed to factor analysis since KMO>0.5
+
+#MSA (Measures of Sampling Adequacy) --> Remove variables with MSA < 0.5
+#Result-> No variables has to be removed
+
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Bartlett's test/homogenity of variances
+bartlett.test(analysis_factor_new)
+#Bartlett Chi-square=23985, p-Value<2.2e-16 --> significance / reject H0 --> at least one sample has a significantly difference variance
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Principal Componenet Analysis (PCA) to find how many factors 
+#Criteria factor, if standard deviation(eigenvalues)>1
+pca1_new = princomp(analysis_factor_new, scores=TRUE, cor=TRUE)
+summary(pca1_new)
+#There are 7 factors which with eigenvalues > 1
+#These 7 factors explains 76.16% of variables
+```
+
+```{r,message=FALSE,warning=FALSE,include=FALSE}
+#Loading factors PCA
+#loadings(pca1_new)
+#Notice that R uses a cut off of .1 so some loadings are blank.
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+# Using 10 factors, since it can not use 7 factors as refferenced by PCA
+fa1_new<-factanal(analysis_factor_new,factors=10, scores="regression",lower = 0.01)
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Loading factors
+#fa1_new$loadings
+#Select loadings factor only
+mload_new<-fa1_new$loadings
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Convert each cells to absolute number
+mload_abs_new<-abs(mload_new)
+mload_abs1_new<-mload_abs_new[,1:10]
+mloaddf_new<-as.data.frame(mload_abs1_new)
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Ordering Factor1
+mload_sort_new<-mloaddf_new[order(mloaddf_new$Factor1),]
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Grouping each variables to the same factors
+mload_sort_new$Max<-colnames(mload_sort_new)[max.col(mload_sort_new,ties.method="first")]
+mload_sort_new$Max
+split(rownames(mload_sort_new),mload_sort_new[,"Max"])
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Hierarchical clustering
+
+#Table with Counties as rowname
+hierclus_table<-analysis_factor_new
+hierclus_table<-cbind(a = analysis1new[,1], hierclus_table)
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Make first column (AreaName) as a rowname
+hierclus_table<-as.data.frame(hierclus_table[,-1], row.names=hierclus_table[,1])
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Standardizing data
+stan_data<-scale(hierclus_table)
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Dissimilarity/proximities matrix with eucidean method
+dis_mat <- dist(stan_data, method = "euclidean")
+```
+
+```{r,message=FALSE,warning=FALSE}
+#Clustering
+hier_clus<-hclust(dis_mat, method = "complete")
+```
+
+```{r,message=FALSE,warning=FALSE}
+# Plot the obtained dendrogram
+plot(hier_clus, cex = 0.6, hang = -1)
+```
+
+
