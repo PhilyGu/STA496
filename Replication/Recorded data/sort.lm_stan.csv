@@ -1,0 +1,32 @@
+"","lm_stan"
+"`Emergency Hospital Admissions for Intentional Self-Harm_All ages_Persons`",3.79479659722863
+"`Estimated prevalence of common mental disorders: % of population aged 65 & over_65+ yrs_Persons`",2.05840048226287
+"`Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Persons`",1.1509387900371
+"`Adults in treatment at specialist drug misuse services: rate per 1000 population_18+ yrs_Persons`",0.360170794168336
+"`Marital breakup: % of adults_18+ yrs_Persons`",0.194371258896373
+"`Older people living alone: % of households occupied by a single person aged 65 or over_65+ yrs_Persons`",0.189303169158174
+"`Mental Health: QOF prevalence (all ages)_All ages_Persons`",0.0923095320596925
+"`Social Isolation: percentage of adult carers who have as much social contact as they would like_18+ yrs_Persons`",0.0911601797994041
+"`Long-term health problem or disability: % of population_All ages_Persons`",0.0887131057425845
+"`Adults in treatment at specialist alcohol misuse services: rate per 1000 population_18+ yrs_Persons`",0.0864810107658167
+"`Successful completion of alcohol treatment_18+ yrs_Persons`",0.0862677358502087
+"`Unemployment (model-based)_16+ yrs_Persons`",0.0452895419012795
+"`Children in care_<18 yrs_Persons`",0.0377480575783332
+"`Successful completion of drug treatment - non-opiate users_18+ yrs_Persons`",0.0238078211585278
+"`Children leaving care: rate per 10,000 children aged under 18_<18 yrs_Persons`",0.00993879427353823
+"`Social Isolation: percentage of adult carers who have as much social contact as they would like_65+ yrs_Persons`",0.00441320708803782
+"`Long term claimants of Jobseeker's Allowance_16-64 yrs_Persons`",0.00158029713821346
+"`Children in the youth justice system (10-17 yrs)_10-17 yrs_Persons`",-0.00748197510935273
+"`Social Isolation: percentage of adult carers who have as much social contact as they would like_18-64 yrs_Persons`",-0.0170323538470345
+"`Self-reported wellbeing - people with a high anxiety score_16+ yrs_Persons`",-0.033119753438651
+"`Social Isolation: percentage of adult carers who have as much social contact as they would like_All ages_Persons`",-0.0339817754735617
+"`Successful completion of drug treatment - opiate users_18+ yrs_Persons`",-0.0376634258658602
+"`Estimated prevalence of opiate and/or crack cocaine use_15-64 yrs_Persons`",-0.0710432371745007
+"`Depression: Recorded prevalence (aged 18+)_18+ yrs_Persons`",-0.0960967223776603
+"`People living alone: % of all usual residents in households occupied by a single person_All ages_Persons`",-0.128476523590806
+"`Social Isolation: percentage of adult social care users who have as much social contact as they would like_18+ yrs_Persons`",-0.153403342227563
+"`Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Female`",-0.492334874958467
+"`Admission episodes for alcohol-related conditions (Broad): Old Method_All ages_Male`",-0.908967979625005
+"`Emergency Hospital Admissions for Intentional Self-Harm_All ages_Male`",-1.3419741184819
+"`Estimated prevalence of common mental disorders: % of population aged 16 & over_16+ yrs_Persons`",-2.15003777867257
+"`Emergency Hospital Admissions for Intentional Self-Harm_All ages_Female`",-2.32023058654113
