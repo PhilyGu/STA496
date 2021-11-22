@@ -8,7 +8,7 @@ This is the place where I would share my STA496 Learning notes and make a diary 
 + From week6 to week9, work on replicating one paper. 
 
 #### Replications
-I choose the paper "Explainable statistical learning in public health for policy development: the case of real-world suicide data" to replicate. And weekly progress and results of my replication are in the folder Replication, in which recorded data are in the excel file. Besides, I'm still working on my final paper.
+I choose the paper "Explainable statistical learning in public health for policy development: the case of real-world suicide data" to replicate. And weekly progress and results of my replication are in the folder Replication, in which recorded data are in the csv file. Besides, I'm still working on my final paper.
 
 #### Textbook 
 Introduction to Statistical Learning with Applications in R (second version), available at https://web.stanford.edu/~hastie/ISLR2/ISLRv2_website.pdf
