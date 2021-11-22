@@ -15,4 +15,4 @@ Introduction to Statistical Learning with Applications in R (second version), av
 + Willetts, M., Hollowell, S., Aslett, L. et al. Statistical machine learning of sleep and physical activity phenotypes from sensor data in 96,220 UK Biobank participants. Sci Rep 8, 7961 (2018). https://doi-org.myaccess.library.utoronto.ca/10.1038/s41598-018-26174-1
 
 #### Replications
-I choose the paper "Explainable statistical learning in public health for policy development: the case of real-world suicide data" to replicate, and my replication results are in the folder Replication.
+I choose the paper "Explainable statistical learning in public health for policy development: the case of real-world suicide data" to replicate, and weekly progress and results of my replication are in the folder Replication. Beside, I'm still working on my final paper.
