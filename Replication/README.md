@@ -4,12 +4,7 @@ The folder contains an R project. This is a replication study of van Schaik, P.,
 
 The original paper can be found here: https://bmcmedresmethodol.biomedcentral.com/track/pdf/10.1186/s12874-019-0796-7.pdf
 
-### Motivation
 
-#### Data analyis
-```
-Exploratory Data Analysis
-```
 
 
 
