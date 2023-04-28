@@ -5,7 +5,7 @@ This is the place where I share my STA496 Learning notes and make a diary of my 
 + Week3: Chapter5 and Chapter6 (Resampling Methods, and Linear Model selection and Regularization)
 + Week4: Chapter7 and Chapter8 (Moving Beyong Linearity and Tree-Based Methods)  
 + Week5: chapter9, chapter10 and chapter12 (Support Vector Machines, Deep Learning and Unsupervised Learning)
-+ From week6 to week10, work on replicating one paper. 
++ From week6 to week12, work on replications
 
 #### Replications
 I choose the paper "Explainable statistical learning in public health for policy development: the case of real-world suicide data" to replicate. And weekly progress and results of my replication are in the folder Replication. 
