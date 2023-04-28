@@ -1,11 +1,12 @@
 ### STA496 (Readings in Statistics)
 
 This is the place where I share my STA496 Learning notes and make a diary of my learning processes. In this research project, I focus on Replication Study and Exploring Public Health with Statistical Learning Methods. From week1 to week5, I read several chapters (approximately eight chapters) on ISLRv2, and the plan is 
-+ Week1&2: Chapter11 (Survival Analysis and Censored Data)
-+ Week3: Chapter5 and Chapter6 (Resampling Methods, and Linear Model selection and Regularization)
-+ Week4: Chapter7 and Chapter8 (Moving Beyong Linearity and Tree-Based Methods)  
-+ Week5: chapter9, chapter10 and chapter12 (Support Vector Machines, Deep Learning and Unsupervised Learning)
-+ From week6 to week12, work on replications
++ Week1: ISLR 5,6,7 (Resampling Methods, Linear Model selection and Regularization, Moving Beyong Linearity)
++ Week2: ISLR 8,9,10 (Tree-Based Methods, Support Vector Machines, Deep Learning)
++ Week3: ISLR 11,12,13 (Survival Analysis and Censored Data, Unsupervised Learning, Multiple Testing)
++ Week4: ESL 13,14,15 (Prototype Methods and Nearest-Neighbors, Unsupervised Learning, Random Forests)
++ Week5: ESL 16,17,18 (Ensemble Learning, Undirected Graphical Models, High-Dimensional Problems)  
++ Week6~12: work on replications
 
 #### Replications
 I choose the paper "Explainable statistical learning in public health for policy development: the case of real-world suicide data" to replicate. And weekly progress and results of my replication are in the folder Replication. 
