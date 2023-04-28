@@ -11,7 +11,8 @@ This is the place where I share my STA496 Learning notes and make a diary of my 
 I choose the paper "Explainable statistical learning in public health for policy development: the case of real-world suicide data" to replicate. And weekly progress and results of my replication are in the folder Replication. 
 
 #### Textbook 
-Introduction to Statistical Learning with Applications in R (second version), available at https://web.stanford.edu/~hastie/ISLR2/ISLRv2_website.pdf
++ Introduction to Statistical Learning with Applications in R (second version), available at https://web.stanford.edu/~hastie/ISLR2/ISLRv2_website.pdf
++ The Elements of Statistical Learning: Data Mining, Inference, and Prediction, available at https://hastie.su.domains/Papers/ESLII.pdf
 
 #### List of related Papers with code and data available
 + van Schaik, P., Peng, Y., Ojelabi, A. et al. Explainable statistical learning in public health for policy development: the case of real-world suicide data. BMC Med Res Methodol 19, 152 (2019). https://doi.org/10.1186/s12874-019-0796-7
