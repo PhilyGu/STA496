@@ -1,6 +1,6 @@
 ### STA496 (Readings in Statistics)
 
-This is the place where I share my STA496 Learning notes and make a diary of my learning processes. In this research project, I focus on Replication Study and Exploring Public Health with Statistical Learning Methods. From week1 to week5, I read several chapters (approximately eight chapters) on ISLRv2, and the plan is 
+This is the place where I share my STA496 Learning notes and make a diary of my learning processes. In this research project, I focus on Replication Study and Exploring Public Health with Statistical Learning Methods. I first read several chapters from ISLRv2 and ESL, and then focus on the replication research. The plan is as follows: 
 + Week1: ISLR 5,6,7 (Resampling Methods, Linear Model selection and Regularization, Moving Beyong Linearity)
 + Week2: ISLR 8,9,10 (Tree-Based Methods, Support Vector Machines, Deep Learning)
 + Week3: ISLR 11,12,13 (Survival Analysis and Censored Data, Unsupervised Learning, Multiple Testing)
